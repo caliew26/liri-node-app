@@ -7,23 +7,31 @@ var Spotify = require('node-spotify-api');
 var axios = require("axios");
 
 var input = process.argv[2];
+if(process.argv[2]=== 'concert-this'){
+    function myConcert(input) {
+    var concert = userInput;
 
-function myConcert(userInput) {
-if(input === "concert-this"){
-    console.log("This is concert");
-    var input = "Cher";
-    url: "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
-    }
+    if(!concert){
+        concert = "New Kids on The Block";
+        }
+        // console.log("This is concert");
+        
+        var url = "https://rest.bandsintown.com/artists/" + concert + "/events?app_id=codingbootcamp";
+        
+};
 };
 
 var spotify = new Spotify(keys.spotify);
 
-function myMusic(userInput){
-    var song = userInput;
+if(process.argv[2]==="spotify-this-song"){
+    function myMusic(input){
+        var song = userInput;
 
-    if(song){
-        console.log("This is a song");
-
+        if(!song){
+            song = "Let It Go"
+            // console.log("This is a song");
+        };
+            
         spotify.search({ 
                 type: 'track', 
                 query: song, 
@@ -39,32 +47,35 @@ function myMusic(userInput){
             console.log("Album " + response.tracks.album[0].name);
             };
         });
-    }
-};
-
-function myMovie(userInput){
-    var movie = userInput;
-
-    if(!movie){
-       movie = "beauty and the beast"
-    }
-
-    var url = "http://www.omdbapi.com/?t=" + movie + "&apikey=trilogy";
-
-    axios.get(url).then(function(response)){
-        console.log("Movie " + response);
-        console.log("Year released " + response);
-        console.log("Rating " + response);
-        console.log("Country filmed " + response);
-        console.log("Language " + response);
-        console.log("Plot " + response);
-        console.log("Actors " + response);
     };
-};
+}
 
-function myBoss(userInput){
-if(input === "do-what-it-says"){
-    console.log("Do it!");
-    //will figure out what happens here
-    }
+if(process.argv[2]==="movie-this"){
+    // function myMovie(userInput){
+        var movieName = "";
+
+        if(!movieName){
+        movieName = "beauty and the beast"
+        }
+
+        var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+
+        axios.get(queryUrl).then(function(response){
+            console.log("Movie " + response.data.Title);
+            console.log("Year released " + response.data.Year);
+            console.log("Rating " + response.data.Rating);
+            console.log("Language " + response.data.Language);
+            console.log("Plot " + response.data.Plot);
+            console.log("Actors " + response.data.Actors);
+        });
+    };
+// };
+
+if(process.argv[2]==="do-what-it-says"){
+    function myBoss(input){
+    if(input === "do-what-it-says"){
+        console.log("Do it!");
+        //will figure out what happens here
+        }
+    };
 };
