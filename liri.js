@@ -13,9 +13,10 @@ const axios = require("axios");
 //require fs npm package
 const fs = require("fs");
 
-//declare node index 2
+//declare node index 2 and 3 for input by the user
 var input = process.argv[2];
     input2 = process.argv[3];
+    input3 = process.argv[4];
 
 //if statement to take input from user and run concert-this code
 if(input === 'concert-this'){
@@ -30,25 +31,27 @@ if(input === 'concert-this'){
     //declare the api url used to send to "bandsintown.com"
     var queryUrl = "https://rest.bandsintown.com/artists/" + concertBand + "/events?app_id=codingbootcamp";
 
-    //axios will call the api call to bandsintown.com
+    //axios will call the api to bandsintown.com
     axios.get(queryUrl).then(function(response){
         //using the response to get things back
+        console.log(response);
         console.log("Date of concert " + response.datetime);
         console.log("Date tickets go on sale " + response.on_sale_datetime);
     })
-    
-    fs.writeFile("concert.js", response, function(err){
+    //create a concert.js file and populate responses 
+    fs.writeFile("concert.js", "response", function(err){
         if (err){
             console.log("filewrite " + err);
         }
         console.log("concert.js was updated");
     });
+    //read the concert.js file that was just generated
     fs.readFile("concert.js", "utf8", function(err,data){
         if (err){
             console.log("fileread " + err);
         }
         console.log(data);
-
+        //create an array of the readfile and split with a comma
         var dataArr = data.split(",");
 
         console.log(dataArr);
