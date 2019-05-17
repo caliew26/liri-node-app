@@ -13,108 +13,65 @@ const axios = require("axios");
 //require fs npm package
 const fs = require("fs");
 
-//declare node index 2 and 3 for input by the user
-var input = process.argv[2];
+//require the file "random.txt"
+// const random = require("./random.txt");
+
+var input1 = process.argv[2];
     input2 = process.argv[3];
-    input3 = process.argv[4];
+    // input3 = process.argv[3] + process.argv[4];
 
-//if statement to take input from user and run concert-this code
-if(input === 'concert-this'){
-    // function myConcert(input) {
-    // declare a variable that will be a user input that is put into the api call
-    var concertBand = input2;
-    //if no band is given, then set a default band
-    // if(!concertBand){
-    //     concertBand = "New Kids on The Block";
-    // }
-    // console.log("This is concert");
-    //declare the api url used to send to "bandsintown.com"
-    var queryUrl = "https://rest.bandsintown.com/artists/" + concertBand + "/events?app_id=codingbootcamp";
+if(input1 === "concert-this"){
+    var bandName = input2;
+    // // if(bandName === ""){
+        // var bandName = "NKOTB";
+    // // }
 
-    //axios will call the api to bandsintown.com
-    axios.get(queryUrl).then(function(response){
-        //using the response to get things back
-        console.log(response);
-        console.log("Date of concert " + response.datetime);
-        console.log("Date tickets go on sale " + response.on_sale_datetime);
+    var queryUrl = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp&date=upcoming";
+   
+    // axios.get(queryUrl)
+    // .then(function(error,response){
+
+    //     if (error){
+    //         console.log(error);
+    //     } 
+    //     catch(function (error) {
+    //         console.log(error)
+    //     })
+
+    axios.get(queryUrl).catch(function(error){
+      console.log(error);
     })
-    //create a concert.js file and populate responses 
-    fs.writeFile("concert.js", "response", function(err){
-        if (err){
-            console.log("filewrite " + err);
-        }
-        console.log("concert.js was updated");
-    });
-    //read the concert.js file that was just generated
-    fs.readFile("concert.js", "utf8", function(err,data){
-        if (err){
-            console.log("fileread " + err);
-        }
-        console.log(data);
-        //create an array of the readfile and split with a comma
-        var dataArr = data.split(",");
-
-        console.log(dataArr);
+    .then(function(response){
+        console.log("----------------------------");
+        console.log("artist: " + input2);
+        console.log("venue name: " + response.data[0].venue.name);
+        console.log("venue city: " + response.data[0].venue.city);
+        console.log("date: " + response.data[0].datetime)
+        console.log("----------------------------");
+      // console.log("2----------------------------");
+      // console.log(response.statuText);
+      // console.log("3----------------------------");
+      // console.log(response.headers);
+      // console.log("1----------------------------");
     })
+        // console.log(JSON.stringify(body,null,2));
+    
+        // console.log("1----------------------------");
+        // console.log(response);
+        // console.log("2----------------------------");
+        // console.log(response.statuText);
+        // console.log("3----------------------------");
+        // console.log(response.headers);
+        // console.log("1----------------------------");
+        // console.log(data[0]);
+		//console.log(response.data);
+		//console.log(response);
+		//console.log(response.data[0]);
+//     });
 };
 
-
-var spotify = new Spotify(keys.spotify);
-
-//if statement to take input from user and run concert-this code
-if(input === "spotify-this-song"){
-// function myMusic(input){
-    // declare a variable that will be a user input that is put into the api call
-    var songName = input2;
-    //if no songName is given, then set a default songName
-    // if(!songName){
-    //     songName = "let it go"
-        // console.log("This is a song");
-    // }
-    //spotify api requirements, a track and a songName and number of responses rec'd back
-    spotify.search({ 
-        type: 'track', 
-        query: songName, 
-        limit: 3,
-        },//capture error
-        function(err, response) {
-            // console.log("this is a test");
-            if(err){
-            console.log("The error " + err)
-        }else{
-            //using the response to get things back
-            console.log(response.tracks.items);
-            console.log("name " + response.tracks.album.name);
-            console.log("type " + response.tracks.artists.type);
-            console.log("artist " + response.tracks.artists.name);
-        };
-    fs.writeFile("spotify.js", response.tracks.items, function(err){
-        if (err){
-            console.log("filewrite " + err);
-        }
-        console.log("spotify.js was updated");
-    });
-    fs.readFile("spotify.js", "utf8", function(err,data){
-        if (err){
-            console.log("fileread " + err);
-        }
-        console.log(data);
-
-        var dataArr = data.split(",");
-
-        console.log(dataArr);
-    })
-    });
-};
-
-//if statement to take input from user and run concert-this code
-if(input === "movie-this"){
-    // function myMovie(userInput){
-    var movieName = input2;
-    //if no movieName is provided then have a default movie
-    // if(!movieName){
-    //     movieName = "beauty and the beast"
-    // }
+if(input1 === "movie-this"){
+    movieName = input2;
 
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 
@@ -126,33 +83,47 @@ if(input === "movie-this"){
         console.log("Plot " + response.data.Plot);
         console.log("Actors " + response.data.Actors);
     });
-//create a movie.js file with the response back from the axios queryUrl api call
-    fs.writeFile("movie.js", 'response' ,function(err){
-        if (err){
-            console.log("filewrite " + err);
+}
+
+var spotify = new Spotify(keys.spotify);
+
+if(input1 === "spotify-this-song"){
+    songName = input2,
+
+    spotify.search({ 
+        type: 'track', 
+        query: input2,
+        limit: 5
+        }, function(err, data) {
+        if ( err ) {
+            console.log('Error occurred: ' + err);
+            return;
         }
-        console.log("movie.js was updated");
+        //create a spotify.js file and import all data.tracks.items values
+        // fs.writeFile("spotify.js", data.tracks.items[0,1,2,3,4], function(err){
+        //     if (err){
+        //         console.log("filewrite " + err);
+        //     }
+        //     console.log("spotify.js was updated");
+        // });
+        // console.log(data.tracks.items);
+
+        console.log("Song by: " + data.tracks.items[0].album.artists[0].name);
+        console.log("Song title: " + data.tracks.items[0].name);
+        console.log("Song is on album titled: " + data.tracks.items[0].album.name)
+        // console.log(data.tracks.items.album.preview_url);
+        // console.log(data.tracks.items[0].album.preview_url);
+        // console.log(data.tracks.items[2].album.preview_url);
     });
-    fs.readFile("movie.js", "utf8", function(err,data){
-        if (err){
-            console.log("fileread " + err);
-        }
-        console.log(data);
-
-        var dataArr = data.split(",");
-
-        console.log(dataArr);
-    })
-};
+}
 
 //if statement to take input from user and run concert-this code
-if(input === "do-what-it-says"){
-        // console.log("Do it!");
-        // };
+if(input1 === "do-what-it-says"){
+    console.log("Do it!");
     fs.readFile("random.txt", "utf8", function(error,data){
         if (error){
             console.log(error);
         }
         console.log(data);
     });
-};
+}
