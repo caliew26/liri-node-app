@@ -32,12 +32,15 @@ if(input1 === "concert-this"){
       console.log(error);
     })
     .then(function(response){
+        for(var i = 0; i < response.data.length; i++){
         console.log("----------------------------");
-        console.log("artist: " + input2);
-        console.log("venue name: " + response.data[0].venue.name);
-        console.log("venue city: " + response.data[0].venue.city);
-        console.log("date: " + response.data[0].datetime)
+        console.log("artist: " + input2);    
+        console.log("venue name: " + response.data[i].venue.name);
+        console.log("venue city: " + response.data[i].venue.city);
+        console.log("date: " + response.data[i].datetime)
         console.log("----------------------------");
+           
+        }
     });
 };
 
