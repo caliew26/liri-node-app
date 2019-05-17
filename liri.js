@@ -27,16 +27,6 @@ if(input1 === "concert-this"){
     // // }
 
     var queryUrl = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp&date=upcoming";
-   
-    // axios.get(queryUrl)
-    // .then(function(error,response){
-
-    //     if (error){
-    //         console.log(error);
-    //     } 
-    //     catch(function (error) {
-    //         console.log(error)
-    //     })
 
     axios.get(queryUrl).catch(function(error){
       console.log(error);
@@ -48,26 +38,7 @@ if(input1 === "concert-this"){
         console.log("venue city: " + response.data[0].venue.city);
         console.log("date: " + response.data[0].datetime)
         console.log("----------------------------");
-      // console.log("2----------------------------");
-      // console.log(response.statuText);
-      // console.log("3----------------------------");
-      // console.log(response.headers);
-      // console.log("1----------------------------");
-    })
-        // console.log(JSON.stringify(body,null,2));
-    
-        // console.log("1----------------------------");
-        // console.log(response);
-        // console.log("2----------------------------");
-        // console.log(response.statuText);
-        // console.log("3----------------------------");
-        // console.log(response.headers);
-        // console.log("1----------------------------");
-        // console.log(data[0]);
-		//console.log(response.data);
-		//console.log(response);
-		//console.log(response.data[0]);
-//     });
+    });
 };
 
 if(input1 === "movie-this"){
