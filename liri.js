@@ -44,8 +44,14 @@ if(input1 === "concert-this"){
     });
 };
 
-if(input1 === "movie-this"){
-    movieName = input2;
+//if statement to take input from user and run concert-this code
+if(input === "movie-this"){
+    // function myMovie(userInput){
+    var movieName = input2;
+    //if no movieName is provided then have a default movie
+    // if(!movieName){
+    //     movieName = "beauty and the beast"
+    // }
 
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 
@@ -57,7 +63,24 @@ if(input1 === "movie-this"){
         console.log("Plot " + response.data.Plot);
         console.log("Actors " + response.data.Actors);
     });
-}
+//create a movie.js file with the response back from the axios queryUrl api call
+    fs.writeFile("movie.js", 'response' ,function(err){
+        if (err){
+            console.log("filewrite " + err);
+        }
+        console.log("movie.js was updated");
+    });
+    fs.readFile("movie.js", "utf8", function(err,data){
+        if (err){
+            console.log("fileread " + err);
+        }
+        console.log(data);
+
+        var dataArr = data.split(",");
+
+        console.log(dataArr);
+    })
+};
 
 var spotify = new Spotify(keys.spotify);
 
@@ -92,12 +115,12 @@ if(input1 === "spotify-this-song"){
 }
 
 //if statement to take input from user and run concert-this code
-if(input1 === "do-what-it-says"){
-    console.log("Do it!");
-    fs.readFile("random.txt", "utf8", function(error,data){
-        if (error){
-            console.log(error);
-        }
-        console.log(data);
-    });
-}
+// if(input1 === "do-what-it-says"){
+//     console.log("Do it!");
+//     fs.readFile("random.txt", "utf8", function(error,data){
+//         if (error){
+//             console.log(error);
+//         }
+//         console.log(data);
+//     });
+// }};
