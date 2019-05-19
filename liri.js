@@ -22,7 +22,7 @@ var input1 = process.argv[2];
 //if statement to take input from user and run movie-this code
 if(input1 === "concert-this"){
     var bandName = input2;
-    if(bandName === ""){
+    if(!bandName){
         var bandName = "NKOTB";
     }
 
