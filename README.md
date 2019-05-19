@@ -10,8 +10,7 @@ You will have 3 commands that are available for you to run;
   
   **movie-this:** this will give you a movie with additional info (title, year released, rating, country, languages, plot and actors)
   
-  to see the video - please click -zoom_0.mp4- under "code".
-  [link to the video!](https://github.com/caliew26/liri-node-app/blob/master/zoom_0.mp4)
+  to see the video - [link to the video!](https://github.com/caliew26/liri-node-app/blob/master/zoom_0.mp4)
   
   
 SCREENSHOTS:
