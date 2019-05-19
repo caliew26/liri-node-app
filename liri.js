@@ -18,13 +18,13 @@ const fs = require("fs");
 
 var input1 = process.argv[2];
     input2 = process.argv[3];
-    // input3 = process.argv[3] + process.argv[4];
 
+//if statement to take input from user and run movie-this code
 if(input1 === "concert-this"){
     var bandName = input2;
-    // // if(bandName === ""){
-        // var bandName = "NKOTB";
-    // // }
+    if(bandName === ""){
+        var bandName = "NKOTB";
+    }
 
     var queryUrl = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp&date=upcoming";
 
@@ -32,95 +32,90 @@ if(input1 === "concert-this"){
       console.log(error);
     })
     .then(function(response){
-        for(var i = 0; i < response.data.length; i++){
-        console.log("----------------------------");
-        console.log("artist: " + input2);    
-        console.log("venue name: " + response.data[i].venue.name);
-        console.log("venue city: " + response.data[i].venue.city);
-        console.log("date: " + response.data[i].datetime)
-        console.log("----------------------------");
-           
+        var concert = response.data;
+        for(var i = 0; i < concert.length; i++){
+            console.log("----------------------------");
+            console.log("artist: " + concert[i].Artist);    
+            console.log("venue name: " + concert[i].venue.name);
+            console.log("venue city: " + concert[i].venue.city);
+            console.log("date: " + concert[i].datetime)
+            console.log("----------------------------");
         }
-    });
+    })
 };
 
-//if statement to take input from user and run concert-this code
-if(input === "movie-this"){
+//if statement to take input from user and run movie-this code
+if(input1 === "movie-this"){
     // function myMovie(userInput){
     var movieName = input2;
     //if no movieName is provided then have a default movie
-    // if(!movieName){
-    //     movieName = "beauty and the beast"
-    // }
+    if(!movieName){
+        var movieName = "beauty and the beast";
+    }
 
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 
-    axios.get(queryUrl).then(function(response){
-        console.log("Movie " + response.data.Title);
-        console.log("Year released " + response.data.Year);
-        console.log("Rating " + response.data.Rating);
-        console.log("Language " + response.data.Language);
-        console.log("Plot " + response.data.Plot);
-        console.log("Actors " + response.data.Actors);
-    });
-//create a movie.js file with the response back from the axios queryUrl api call
-    fs.writeFile("movie.js", 'response' ,function(err){
-        if (err){
-            console.log("filewrite " + err);
+    axios.get(queryUrl).catch(function(error){
+        if(error){
+            console.log(error);
         }
-        console.log("movie.js was updated");
-    });
-    fs.readFile("movie.js", "utf8", function(err,data){
-        if (err){
-            console.log("fileread " + err);
-        }
-        console.log(data);
+    })
+    .then(function(response){
+        var movies = [
+            "----------------------------",
+            "Movie " + response.data.Title,
+            "Year released " + response.data.Year,
+            "Rating " + response.data.tomatoRating,
+            "Language " + response.data.Language,
+            "Plot " + response.data.Plot,
+            "Actors " + response.data.Actors,
+            "----------------------------"
+        ].join("\n\n");
 
-        var dataArr = data.split(",");
-
-        console.log(dataArr);
+        fs.appendFile("log.txt", movies, function(err) {
+            if (err) throw err;
+            console.log(movies);
+        })
     })
 };
 
 var spotify = new Spotify(keys.spotify);
 
 if(input1 === "spotify-this-song"){
-    songName = input2,
+    songName = input2;
+
+    if(!songName){
+        var songName = "Believe";
+    }
 
     spotify.search({ 
         type: 'track', 
-        query: input2,
+        query: songName,
         limit: 5
         }, function(err, data) {
         if ( err ) {
             console.log('Error occurred: ' + err);
-            return;
         }
-        //create a spotify.js file and import all data.tracks.items values
-        // fs.writeFile("spotify.js", data.tracks.items[0,1,2,3,4], function(err){
-        //     if (err){
-        //         console.log("filewrite " + err);
-        //     }
-        //     console.log("spotify.js was updated");
-        // });
-        // console.log(data.tracks.items);
 
-        console.log("Song by: " + data.tracks.items[0].album.artists[0].name);
-        console.log("Song title: " + data.tracks.items[0].name);
-        console.log("Song is on album titled: " + data.tracks.items[0].album.name)
-        // console.log(data.tracks.items.album.preview_url);
-        // console.log(data.tracks.items[0].album.preview_url);
-        // console.log(data.tracks.items[2].album.preview_url);
+        var songs = data.tracks.items;
+        for(var i = 0; i < songs.length; i++){
+            console.log("----------------------------");
+            console.log("Song by: " + songs[i].album.artists.name);
+            console.log("Song title: " + songs[i].name);
+            console.log("Song is on album titled: " + songs[i].album.name);
+            console.log("----------------------------");
+        }
     });
 }
 
-//if statement to take input from user and run concert-this code
-// if(input1 === "do-what-it-says"){
-//     console.log("Do it!");
-//     fs.readFile("random.txt", "utf8", function(error,data){
-//         if (error){
-//             console.log(error);
-//         }
-//         console.log(data);
-//     });
-// }};
+// if statement to take input from user and run do-what-it-says code
+if(input1 === "do-what-it-says"){
+    console.log("Do it!");
+
+    fs.readFile("random.txt", "utf8", function(error,data){
+        if (error){
+            console.log(error);
+        }
+        console.log(data);
+    });
+};
